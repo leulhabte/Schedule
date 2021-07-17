@@ -1,24 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React from 'react'; 
+import ScheduleForm from './ScheduleForm';
+import ScheduleTable from './ScheduleTable';
+import Accessories from './Components/AccessoriesMgmt/accessories';
+import Devices from './Components/DeviceMgmt/devices';
+import Technicians from './Components/TechnicianMgmt/technicians';
+import Update from './Components/UpdateInfo/update';
+import {BrowserRouter,Route,Switch} from 'react-router-dom'
+import useStyle from './Styling';
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const classes = useStyle();
+  return ( 
+      <BrowserRouter>
+      <div className = {classes.root}>
+        <ScheduleTable/>
+      <Switch>
+        <Route path = '/ScheduleForm'>
+          <ScheduleForm/>
+        </Route>
+        <Route path = '/ScheduleTable'>
+          <ScheduleTable/>
+        </Route>
+        <Route path ='/Update'>
+          <Update/>
+        </Route>
+        <Route path = '/Accessories'>
+          <Accessories/>
+        </Route>
+        <Route path = '/Devices'>
+          <Devices/>
+        </Route>
+        <Route path = '/Technicians'>
+          <Technicians/>
+        </Route>
+      </Switch>
+      </div>
+      </BrowserRouter>
   );
 }
 
