@@ -6,21 +6,13 @@ import { withRouter } from 'react-router';
 import { Update } from '@material-ui/icons';
 const ScheduleTable = ({history}) => {
      const [data, setData] = React.useState([])
-     const [loading,setLoading] = React.useState(false);
      React.useEffect(()=>{
-          setLoading(true)
           fetchSchedule()
       },[])
       
-     const fetchSchedule = () => {
-          const res = axios.get('/schedules')
-          .then((res)=>{
-               if(res.status === 200){
-                    setData(res.data.schedules)
-               }
-          }).catch(err => {alert(err)}).finally(()=> {
-               setLoading(false);
-          })
+     const fetchSchedule = async () => {
+          const res = await axios.get('/schedules')
+          setData(res.data.schedules);
      }
      const columns = [
           {
@@ -127,15 +119,12 @@ const ScheduleTable = ({history}) => {
                }
               },
      ]
-     const row = data.map(Object.values)
-     if(loading){
-          return <p>loading</p>
-     }
+     // const row = data.map(Object.values)
      return (
           <div>
                <MUIDataTable
                     title={"schedule list"}
-                    data = {row}
+                    data = {data}
                     // data = {data.map(values =>{
                     //      return [
                     //           values.accesory,
