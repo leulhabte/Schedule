@@ -1,3 +1,7 @@
+->the update button added to the custom render column doesnt seem to send data as well
+->fetch request only works for 1 of the 3 fetches on the form
+->delete requires 2 clicks(was considering making it a button that calls a confirmation pop up screen that then calls the delete request)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
