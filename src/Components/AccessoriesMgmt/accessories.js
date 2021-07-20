@@ -23,8 +23,8 @@ const Accessories = ({ history }) => {
             accessoryName: acsName
         }
         const addRes = await axios.post('/accessory/add', accessoryInfo)
-        if(addRes.status()===200){
-            history.push({pathname:'/Accessories'})
+        if(addRes.status === 200){
+        console.log("new accessory added")
         }
         else{
             alert("Failed to add new Accessory")
@@ -33,7 +33,9 @@ const Accessories = ({ history }) => {
 
     const deleteAccessories = async () => {
         const delRes = await axios.delete(`/accessory/remove/?id=${id}`)
-
+        if(delRes.status === 200){
+            history.push({pathname:'/Accessories'})
+        }
     }
     return (
         <div>
@@ -42,7 +44,7 @@ const Accessories = ({ history }) => {
                     <Grid item md={6} xs={12}>
                     <Container>
                         <Box display="flex" justifyContent="center">
-                            <Typography classes={{root:classes.basicHeader}}>Remove Accessory(ies)</Typography>
+                            <Typography classes={{root:classes.basicHeader}}>Remove Accessory</Typography>
                         </Box>
                         <TableContainer classes={{ root: classes.dataContainer }}>
                             <Table>

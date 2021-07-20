@@ -15,7 +15,7 @@ const Technicians = ({ history }) => {
 
     const fetchTechnicians = async () => {
         const res = await axios.get('/technicians')
-        setData(res.data.technicians)
+        setData(res.data.technician)
     }
 
     const addTechnician = async () => {
@@ -33,7 +33,12 @@ const Technicians = ({ history }) => {
 
     const deleteTechnicians = async () => {
         const delRes = await axios.delete(`/technician/remove/?id=${id}`)
-
+        if(delRes.status === 200){
+            history.push({pathname:'/Technicians'})
+        }
+        else{
+            alert("Failed to Remove Technicians")
+        }
     }
     return (
         <div>
@@ -53,7 +58,7 @@ const Technicians = ({ history }) => {
                                 <TableBody>
                                     {data.map((value) => (
                                         <TableRow key={value._id}>
-                                            <TableCell>{value.TechnicianName}</TableCell>
+                                            <TableCell>{value.technicianName}</TableCell>
                                             <TableCell>
                                                 <Tooltip title="Remove Technician">
                                                 <IconButton onClick={()=>{const id=value._id;setId(id);deleteTechnicians();}}><Delete/></IconButton>

@@ -18,14 +18,17 @@ const Update =({history}) => {
     const [acsData,setAcsData] = React.useState([]);
     const [devData,setDevData] = React.useState([]);
     const [tecData,setTecData] = React.useState([]);
-    const [id,setId] = React.useState("")
-    const toUpdate = history.location.state.data
-    setId(toUpdate.id)
+    const [id,setId] = React.useState({})
     React.useEffect(()=>{
         fetchAccessories()
         fetchDevices()
         fetchTechnicians()
+        handleID()
     },[])
+    const handleID = () => {
+        setId(history.location.state.data)
+        console.log()
+    }
     const update = async () => {
         const res = await axios.post(`/`)
     }
@@ -35,11 +38,11 @@ const Update =({history}) => {
     }
     const fetchDevices = async () => {
         const res = await axios.get('/devices')
-        setDevData(res.data.devices)
+        setDevData(res.data.device)
     }
     const fetchTechnicians = async () => {
         const res = await axios.get('/technicians')
-        setTecData(res.data.technicians)
+        setTecData(res.data.technician)
     }
 
      return (

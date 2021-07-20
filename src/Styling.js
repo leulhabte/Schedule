@@ -4,6 +4,9 @@ const useStyle = makeStyles((theme) => ({
   root: {
     display: 'flex'
   },
+  itemColor: {
+    color: 'white'
+  },
   grid: {
     display: 'flex',
     justifyContent: 'center'
@@ -31,10 +34,6 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   appBar: {
-    [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-    },
     background: 'rgb(2,117,216)'
   },
   itemHeader: {
@@ -47,6 +46,10 @@ const useStyle = makeStyles((theme) => ({
     background: 'rgb(2,117,216)'
   },
   toolbar : theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
   links : {
     textDecoration :'none'
   }

@@ -5,6 +5,7 @@ import Accessories from './Components/AccessoriesMgmt/accessories';
 import Devices from './Components/DeviceMgmt/devices';
 import Technicians from './Components/TechnicianMgmt/technicians';
 import Update from './Components/UpdateInfo/update';
+import Home from './Components/HomePage/home';
 import {BrowserRouter,Route,Switch} from 'react-router-dom'
 import useStyle from './Styling';
 function App() {
@@ -12,27 +13,18 @@ function App() {
   return ( 
       <BrowserRouter>
       <div className = {classes.root}>
-        <ScheduleTable/>
+      <Home/>
+      <div className = {classes.content}>
+      <div className = {classes.toolbar}/>
       <Switch>
-        <Route path = '/ScheduleForm'>
-          <ScheduleForm/>
-        </Route>
-        <Route path = '/ScheduleTable'>
-          <ScheduleTable/>
-        </Route>
-        <Route path ='/Update'>
-          <Update/>
-        </Route>
-        <Route path = '/Accessories'>
-          <Accessories/>
-        </Route>
-        <Route path = '/Devices'>
-          <Devices/>
-        </Route>
-        <Route path = '/Technicians'>
-          <Technicians/>
-        </Route>
+        <Route exact path = '/ScheduleForm' component = {ScheduleForm}/>
+        <Route exact path = '/ScheduleTable' component = {ScheduleTable}/>
+        <Route exact path ='/Update' component = {Update}/>
+        <Route exact path = '/Accessories' component = {Accessories}/>
+        <Route exact path = '/Devices' component = {Devices}/>
+        <Route exact path = '/Technicians' component = {Technicians}/>
       </Switch>
+      </div>
       </div>
       </BrowserRouter>
   );

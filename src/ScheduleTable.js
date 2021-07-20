@@ -4,16 +4,30 @@ import {Tooltip,IconButton} from '@material-ui/core'
 import MUIDataTable from 'mui-datatables';
 import { withRouter } from 'react-router';
 import { Update } from '@material-ui/icons';
+import useStyle from './Styling';
 const ScheduleTable = ({history}) => {
-     const [data, setData] = React.useState([])
+     const classes = useStyle();
+     const [data, setData] = React.useState([null])
      React.useEffect(()=>{
           fetchSchedule()
       },[])
-      
+     const handleClick = () => {
+          history.push({pathname : '/Update',state : {data : data}})
+     }
      const fetchSchedule = async () => {
           const res = await axios.get('/schedules')
-          setData(res.data.schedules);
+          setData(res.data.schedule);
+          console.log(res.data)
      }
+     const options = {
+          rowsPerPage: 10,
+          rowsPerPageOptions: [5, 10],
+          print: false,
+          fixedHeader: true,
+          selectableRows: 'none',
+          filterType : 'checkbox',
+          responsive: "scrollMaxHeight"
+     }      
      const columns = [
           {
                name: "accessory",
@@ -112,35 +126,21 @@ const ScheduleTable = ({history}) => {
                 customBodyRenderLite : () => {
                     return (
                          <Tooltip title = "Update Info">
-                              <IconButton onClick={()=>{history.push({pathname : '/Update',state : {data : data}})}}><Update/></IconButton>
+                              <IconButton onClick={handleClick}><Update/></IconButton>
                          </Tooltip>
                     );
                   }
                }
               },
      ]
-     // const row = data.map(Object.values)
+     // const row = data.map(value => Object.keys(value).map(k => value[k]))
      return (
-          <div>
+          <div className = {classes.root}>
                <MUIDataTable
                     title={"schedule list"}
                     data = {data}
-                    // data = {data.map(values =>{
-                    //      return [
-                    //           values.accesory,
-                    //           values.accesoryQty,
-                    //           values.companyName,
-                    //           values.contactNumber,
-                    //           values.date,
-                    //           values.device,
-                    //           values.deviceQty,
-                    //           values.jobType,
-                    //           values.location,
-                    //           values.status,
-                    //           values.technician,
-                    //      ]
-                    // })}
                     columns = {columns}
+                    options = {options}
                />
           </div>
      );

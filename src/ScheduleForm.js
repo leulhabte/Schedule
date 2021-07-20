@@ -1,28 +1,23 @@
 import React from 'react';
-import { Select, TextField, MenuItem, Grid, Container, Box, Paper, FormControl, InputLabel, Button, AppBar, Toolbar, Typography, Hidden, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Divider} from '@material-ui/core';
-import { Menu, CalendarToday, Devices, Router, Build } from '@material-ui/icons'
+import { Select, TextField, MenuItem, Grid, Container, Box, Paper, FormControl, InputLabel, Button} from '@material-ui/core';
 import axios from 'axios' 
 import useStyle from './Styling';
-import { Link, withRouter } from 'react-router-dom'
-const ScheduleForm = () => {
+import { withRouter } from 'react-router-dom'
+const ScheduleForm = ({history}) => {
     const classes = useStyle();
-    const [date, setDate] = React.useState(new Date(''));
-    const [type, setDeviceType] = React.useState('');
+    const [date, setDate] = React.useState('');
+    const [type, setDeviceType] = React.useState("");
     const [company, setCompany] = React.useState('');
     const [location, setLocation] = React.useState('');
     const [contactNum, setContactNum] = React.useState('');
     const [accesoriesQty, setAccessoriesQty] = React.useState(0);
     const [deviceQty, setDeviceQty] = React.useState(0);
-    const [accesoriesType, setAccessoriesType] = React.useState('');
-    const [jobType, setJobType] = React.useState('');
-    const [technician, setTechnician] = React.useState('');
-    const [mobileScreen, setMobileScreen] = React.useState(false);
+    const [accesoriesType, setAccessoriesType] = React.useState("");
+    const [jobType, setJobType] = React.useState("");
+    const [technician, setTechnician] = React.useState("");
     const [acsData,setAcsData] = React.useState([]);
     const [devData,setDevData] = React.useState([]);
     const [tecData,setTecData] = React.useState([]);
-    const handleMobileScreen = () => {
-        setMobileScreen(!mobileScreen);
-    }
     React.useEffect(()=>{
         fetchAccessories()
         fetchDevices()
@@ -34,11 +29,11 @@ const ScheduleForm = () => {
     }
     const fetchDevices = async () => {
         const res = await axios.get('/devices')
-        setDevData(res.data.devices)
+        setDevData(res.data.device)
     }
     const fetchTechnicians = async () => {
         const res = await axios.get('/technicians')
-        setTecData(res.data.technicians)
+        setTecData(res.data.technician)
     }
     const postForm = async () => {
         const schForm = {
@@ -54,83 +49,12 @@ const ScheduleForm = () => {
             jobType : jobType,
         }
         const res = await axios.post('/schedule/add',schForm)
+        if(res.status() === 200){
+            history.push({pathName : '/ScheduleTable'})
+        }
     }
-    const drawerHeader = (
-        <div>
-            <Box display='flex' justifyContent='center' p={2}>
-                <Typography variant='h6' classes={{root : classes.itemHeader}}>Mella Tech</Typography>
-            </Box>
-        </div>
-    )
-    const drawerItems = (
-        <div>
-            <Divider />
-            <List>
-                <Link to = '/ScheduleTable'>
-                <ListItem button>
-                    <ListItemIcon><CalendarToday /></ListItemIcon>
-                    <ListItemText>Schedule</ListItemText>
-                </ListItem>
-                </Link>
-                <Link to = '/Devices'>
-                <ListItem button>
-                    <ListItemIcon><Devices/></ListItemIcon>
-                    <ListItemText>Device Management</ListItemText>
-                </ListItem>
-                </Link>
-                <Link to = '/Accessories'>
-                <ListItem button>
-                    <ListItemIcon><Router/></ListItemIcon>
-                    <ListItemText>Accessories Management</ListItemText>
-                </ListItem>
-                </Link>
-                <Link to = '/Technicians'>
-                <ListItem button>
-                    <ListItemIcon><Build/></ListItemIcon>
-                    <ListItemText>Technician Management</ListItemText>
-                </ListItem>
-                </Link>
-            </List>
-        </div>
-    )
     return (
         <div className={classes.root}>
-            <AppBar classes={{root : classes.appBar}} display='flex'>
-                <Toolbar>
-                    <Hidden mdUp>
-                        <IconButton
-                            edge="start"
-                            onClick={handleMobileScreen}
-                        >
-                            <Menu />
-                        </IconButton>
-                    </Hidden>
-                </Toolbar>
-            </AppBar>
-            <nav>
-                <Hidden mdUp>
-                    <Drawer
-                        open={mobileScreen}
-                        onClose={handleMobileScreen}
-                        variant='temporary'
-                        classes={{ paper: classes.drawerPaper }}
-                    >
-                        {drawerHeader}
-                        {drawerItems}
-                    </Drawer>
-                </Hidden>
-                <Hidden smDown>
-                    <Drawer
-                        open
-                        variant='permanent'
-                        classes={{ paper: classes.drawerPaper }}
-                        display='flex'
-                    >
-                        {drawerHeader}
-                        {drawerItems}
-                    </Drawer>
-                </Hidden>
-            </nav>
             <div className = {classes.toolbar}/>
             <Container maxWidth='xl'>
                 <Box paddingY={3} />
@@ -140,7 +64,7 @@ const ScheduleForm = () => {
                             <Paper>
                                 <Box display='flex' flexDirection='column'>
                                     <Box paddingY={2} />
-                                    <Box marginX={3}><TextField required variant="outlined" type="datetime-local" defaultValue="00-00-00T00:00" onChange={(e) => { setDate(e.target.value) }} value={date} /></Box>
+                                    <Box marginX={3}><TextField required variant="outlined" label = "date" onChange={(e) => { setDate(e.target.value) }} value={date} /></Box>
                                     <Box paddingY={2} />
                                     <Box marginX={3}><TextField required fullWidth label="Company" onChange={(e) => { setCompany(e.target.value) }} value={company} /></Box>
                                     <Box paddingY={2} />
@@ -168,8 +92,8 @@ const ScheduleForm = () => {
                                             value={accesoriesType}
                                             onChange={(e) => { setAccessoriesType(e.target.value) }}
                                         >
-                                            {acsData.map((values)=>(
-                                                <MenuItem value = {values.accessory}>{values.accessory}</MenuItem>
+                                            {acsData.map((acsValues)=>(
+                                                <MenuItem value = {acsValues.accessory}>{acsValues.accessory}</MenuItem>
                                             ))}
                                             </Select>
                                     </FormControl>
@@ -181,8 +105,8 @@ const ScheduleForm = () => {
                                         <Select required
                                             value={technician}
                                             onChange={(e) => { setTechnician(e.target.value) }}
-                                        >{tecData.map((values)=>(
-                                            <MenuItem value = {values.technician}>{values.technician}</MenuItem>
+                                        >{tecData.map((tecValues)=>(
+                                            <MenuItem value = {tecValues.technician}>{tecValues.technician}</MenuItem>
                                         ))}
                                         </Select>
                                     </FormControl>
