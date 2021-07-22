@@ -34,7 +34,7 @@ const Technicians = ({ history }) => {
     const deleteTechnicians = async () => {
         const delRes = await axios.delete(`/technician/remove/?id=${id}`)
         if(delRes.status === 200){
-            history.push({pathname:'/Technicians'})
+            history.go()
         }
         else{
             alert("Failed to Remove Technicians")

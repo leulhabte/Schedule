@@ -18,16 +18,39 @@ const Update =({history}) => {
     const [acsData,setAcsData] = React.useState([]);
     const [devData,setDevData] = React.useState([]);
     const [tecData,setTecData] = React.useState([]);
-    const [id,setId] = React.useState({})
+    const [userData,setUserData] = React.useState({})
+
     React.useEffect(()=>{
         fetchAccessories()
         fetchDevices()
         fetchTechnicians()
         handleID()
     },[])
+
     const handleID = () => {
-        setId(history.location.state.data)
-        console.log()
+        setUserData()
+        const {
+            accessory,
+            accessoryQty,
+            companyName,
+            contactNumber,
+            date,
+            device,
+            deviceQty,
+            jobType,
+            location,
+            technician,
+        } = history.location.state.data;
+        setAccessoriesQty(accessoryQty)
+        setCompany(companyName)
+        setContactNum(contactNumber)
+        setDeviceQty(deviceQty)
+        setLocation(location)
+        setJobType(jobType)
+        setDate(date)
+        setAccessoriesType(accessory)
+        setTechnician(technician)
+        setDeviceType(device)
     }
     const update = async () => {
         const res = await axios.post(`/`)
@@ -44,7 +67,7 @@ const Update =({history}) => {
         const res = await axios.get('/technicians')
         setTecData(res.data.technician)
     }
-
+console.log(tecData)
      return (
      <div>
          <Container maxWidth='xl'>
@@ -85,7 +108,7 @@ const Update =({history}) => {
                                         >
                                           
                                           {acsData.map((values)=>(
-                                                <MenuItem value = {values.accessory}>{values.accessory}</MenuItem>
+                                                <MenuItem value = {values.accessoryName}>{values.accessoryName}</MenuItem>
                                             ))}  
                                         </Select>
                                     </FormControl>
@@ -99,7 +122,7 @@ const Update =({history}) => {
                                             onChange={(e) => { setTechnician(e.target.value) }}
                                         >
                                             {tecData.map((values)=>(
-                                            <MenuItem value = {values.technician}>{values.technician}</MenuItem>
+                                            <MenuItem value = {values.technicianName}>{values.technicianName}</MenuItem>
                                         ))}
                                         </Select>
                                     </FormControl>
